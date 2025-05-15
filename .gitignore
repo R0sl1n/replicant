@@ -1,1 +1,36 @@
 resources/public/js
+
+# Clojure/ClojureScript
+.cpcache/
+.shadow-cljs/
+target/
+.clj-kondo/.cache/
+.lsp/
+.calva/
+
+# Kompilerte filer
+resources/public/js/
+resources/public/cljs-runtime/
+resources/public/manifest.edn
+resources/public/main.js
+resources/public/css/styles.css
+
+# Node.js
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Editor-spesifikke filer
+.vscode/
+.idea/
+*.iml
+*.swp
+*~
+
+# OS-spesifikke filer
+.DS_Store
+Thumbs.db
+
+# Lokale konfigurasjonsfiler
+.env
+.env.local
