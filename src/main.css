@@ -2,3 +2,21 @@
 @source "./**/*.{clj,cljs,cljc}";
 @plugin "daisyui";
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html {
+  data-theme: dark;
+}
+

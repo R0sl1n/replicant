@@ -1,7 +1,9 @@
 (ns guis.core
   (:require [replicant.dom :as r]
             [guis.counter :as counter]
-            [guis.layout :as layout]))
+            [guis.layout :as layout]
+            [guis.temperature :as temperature]
+            [clojure.walk :as walk]))
 
 (def views
   [{:id :counter
@@ -19,6 +21,8 @@
      (case current-view
        :counter
        (counter/render-ui state)
+       :temperatures
+       (temperature/render-ui state)
 
        [:h1.text-lg "Select your UI of choice"])]))
 
@@ -33,11 +37,20 @@
     (fn [action]
       (println (first action) (rest action))
       (or (counter/perform-action state action) 
+          (temperature/perform-action state action)
           (case (first action)
             :action/assoc-in
             [(into [:effect/assoc-in] (rest action))]
             (println "Unknown action"))))
     event-data))
+
+(defn interpolate [event data]
+  (walk/postwalk
+   (fn [x]
+    (case x
+      :event.target/value-as-number (some-> event .-target .-valueAsNumber)
+      x))
+   data))
 
 (defn init [store]
   (add-watch store ::render (fn [_ _ _ new-state]
@@ -45,8 +58,9 @@
                                js/document.body
                                (render-ui new-state))))
   (r/set-dispatch!
-   (fn [_ event-data]
-     (->> (perform-actions @store event-data)
+   (fn [{:replicant/keys [dom-event]} event-data] 
+     (->> (interpolate dom-event event-data)
+          (perform-actions @store)
           (run! #(process-effect store %)))))
                  
   (swap! store assoc ::loaded-at (.getTime (js/Date.))))

@@ -34,3 +34,4 @@ Thumbs.db
 # Lokale konfigurasjonsfiler
 .env
 .env.local
+.nrepl-port
