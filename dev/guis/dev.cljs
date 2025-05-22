@@ -1,7 +1,11 @@
-(ns guis.dev)
+(ns guis.dev
+  (:require [guis.core :as guis]))
 
+(defonce store (atom {:number 0}))
 (defn main []
-  (println "Loaded!!"))
+  (guis.core/init store)
+  (println "Loaded!"))
 
 (defn ^:dev/after-load reload []
-  (println "Reloaded!"))
+  (guis.core/init store)
+  (println "Reloaded!!"))
